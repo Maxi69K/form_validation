@@ -20,8 +20,13 @@ const errorPasswordBox = document.getElementById('error-password')
 const saveBtn = document.getElementById('save-btn')
 // Terms and Services span
 const termsAndServices = document.querySelector('#terms-box span')
-// New user
-let newUser = { firstName: '', lastName: '', email: '', password: '' }
+// User Accounts
+let userAccounts = []
+
+// Loading from local storage
+if (localStorage.userAccounts) {
+  userAccounts = JSON.parse(localStorage.userAccounts)
+}
 
 // Save button function
 saveBtn.addEventListener('click', formValidation)
@@ -94,17 +99,19 @@ function formValidation(e) {
 
     // New user data
     function newUserData() {
+      let newUser = {}
+      newUser.id = Math.floor(Math.random() * (1000000 - 1) + 1)
       newUser.firstName = userData.fnv
       newUser.lastName = userData.lnv
       newUser.email = userData.emv
       newUser.password = userData.psv
-      console.log(newUser)
-      saveNewUser()
+      userAccounts.push(newUser)
     }
     newUserData()
-
-    /* setTimeout(function () {
-      //myForm.submit()
+    saveNewUser()
+   
+    setTimeout(function () {
+      myForm.submit()
 
       firstName.removeAttribute('class', 'error')
       errorFirstNameBox.style.display = 'none'
@@ -117,7 +124,7 @@ function formValidation(e) {
 
       password.removeAttribute('class', 'error')
       errorPasswordBox.style.display = 'none'
-    }, 2000) */
+    }, 1000)
     
   }
   
@@ -125,26 +132,5 @@ function formValidation(e) {
 
 // Save new user to local storage
 function saveNewUser() {
-  let usersData = [
-    {
-      index: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-    },
-  ]
-  usersData.index = Math.random(Math.floor(10000-10)+10)
-  usersData.firstName = newUser.firstName
-  usersData.lastName = newUser.lastName
-  usersData.email = newUser.email
-  usersData.password = newUser.password
-
-  console.log(usersData)
-
-  localStorage.userData = JSON.stringify(usersData)
-
-  //console.log(localStorage.accounts)
-  //console.log(JSON.parse(localStorage.accounts))
+  localStorage.userAccounts = JSON.stringify(userAccounts)
 }
-
